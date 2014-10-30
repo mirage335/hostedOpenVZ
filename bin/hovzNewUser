@@ -18,4 +18,4 @@ useradd -m -s "/bin/bash" "$userName"
 echo "User $userName created. Add password. Consider: $randomString"
 passwd "$userName"
 
-hovzNewVM "$userName" 1 "debian-6.0-x86_64-minimal"
+hovzNewVM "$userName" 1 "debian-7.0-x86_64-minimal"
