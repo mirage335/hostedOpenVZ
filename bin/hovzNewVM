@@ -24,10 +24,10 @@ vzctl set $CTID --hostname "$hovzHostname" --save
 vzctl set $CTID --description "$userName" --save
 vzctl set $CTID --name "$userName-$description" --save
 
-echo "$CTID	$hovzHostname" >> /home/"$userName"/hovzList
+echo "$userName-$description" >> /home/"$userName"/hovzList
 
 #http://xen.1045712.n5.nabble.com/console-access-to-non-root-xen-3-0-td2560667.html
 mkdir -p /etc/sudoers.d
-echo "$userName ALL=NOPASSWD:/usr/sbin/vzctl enter $CTID, /usr/sbin/vzctl start $CTID, /usr/sbin/vzctl stop $CTID" > /etc/sudoers.d/openvz-"$userName-$CTID"
+echo "$userName ALL=NOPASSWD:/usr/sbin/vzctl enter $userName-$description, /usr/sbin/vzctl start $userName-$description, /usr/sbin/vzctl stop $userName-$description" > /etc/sudoers.d/openvz-"$userName-$CTID"
 
 /etc/init.d/sudo restart
