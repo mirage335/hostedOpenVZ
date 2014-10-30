@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Usage: ./hovzNewVM <userName> <VM_ShortDescription> <OS> <extraOpenVZOptions>
+#Usage: ./hovzNewVM <userName> <VM_ShortDescription> <OS>
 #Ex: ./hovzNewVM testUser 1 "debian-6.0-x86_64-minimal"
 
 userName="$1"
@@ -18,7 +18,7 @@ tail -n +2 /etc/hostedOpenVZ/ips.txt > /etc/hostedOpenVZ/ips.txt.new
 mv /etc/hostedOpenVZ/ips.txt.new /etc/hostedOpenVZ/ips.txt
 
 vzctl create $CTID --ostemplate "$OS"
-vzctl set $CTID --ipadd "$IP"
+vzctl set $CTID --ipadd "$IP" --save
 vzctl set $CTID --nameserver "10.174.0.1" --save
 vzctl set $CTID --hostname "$hovzHostname" --save
 vzctl set $CTID --description "$userName" --save
