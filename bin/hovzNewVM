@@ -19,7 +19,7 @@ mv /etc/hostedOpenVZ/ips.txt.new /etc/hostedOpenVZ/ips.txt
 
 vzctl create $CTID --ostemplate "$OS"
 vzctl set $CTID --ipadd "$IP" --save
-vzctl set $CTID --nameserver "10.174.0.1" --save
+vzctl set $CTID --nameserver inherit --save
 vzctl set $CTID --hostname "$hovzHostname" --save
 vzctl set $CTID --description "$userName" --save
 vzctl set $CTID --name "$userName-$description" --save
@@ -28,6 +28,6 @@ echo "$CTID	$hovzHostname" >> /home/"$userName"/hovzList
 
 #http://xen.1045712.n5.nabble.com/console-access-to-non-root-xen-3-0-td2560667.html
 mkdir -p /etc/sudoers.d
-echo "$userName ALL=NOPASSWD:vzctl enter $CTID, vzctl start $CTID, vzctl stop $CTID" > /etc/sudoers.d/openvz-"$userName-$CTID"
+echo "$userName ALL=NOPASSWD:/usr/sbin/vzctl enter $CTID, /usr/sbin/vzctl start $CTID, /usr/sbin/vzctl stop $CTID" > /etc/sudoers.d/openvz-"$userName-$CTID"
 
 /etc/init.d/sudo restart
