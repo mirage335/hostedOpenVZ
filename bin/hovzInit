@@ -1,0 +1,23 @@
+#!/bin/bash
+
+mkdir -p /etc/hostedOpenVZ/
+
+echo > /etc/hostedOpenVZ/ips.txt
+
+for i in $(seq 10 240)
+do
+	for j in $(seq 1 254)
+	do
+		echo 10.176.$i.$j >> /etc/hostedOpenVZ/ips.txt	
+	done
+done
+
+echo > /etc/hostedOpenVZ/CTIDs.txt
+
+for i in $(seq 1001 9999)
+do
+	echo $i >> /etc/hostedOpenVZ/CTIDs.txt
+done
+
+tail -n +2 /etc/hostedOpenVZ/CTIDs.txt > /etc/hostedOpenVZ/CTIDs.txt.new
+mv /etc/hostedOpenVZ/CTIDs.txt.new /etc/hostedOpenVZ/CTIDs.txt

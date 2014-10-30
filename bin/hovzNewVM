@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#Usage: ./hovzNewVM <userName> <VM_ShortDescription> <OS> <extraOpenVZOptions>
+#Ex: ./hovzNewVM testUser 1 "debian-6.0-x86_64-minimal"
+
+userName="$1"
+description="$2"
+OS="$3"
+
+hovzHostname="$userName-$description"."$(hostname -f)"
+
+CTID=$(head -n1 /etc/hostedOpenVZ/CTIDs.txt)
+tail -n +2 /etc/hostedOpenVZ/CTIDs.txt > /etc/hostedOpenVZ/CTIDs.txt.new
+mv /etc/hostedOpenVZ/CTIDs.txt.new /etc/hostedOpenVZ/CTIDs.txt
+
+IP=$(head -n1 /etc/hostedOpenVZ/ips.txt)
+tail -n +2 /etc/hostedOpenVZ/ips.txt > /etc/hostedOpenVZ/ips.txt.new
+mv /etc/hostedOpenVZ/ips.txt.new /etc/hostedOpenVZ/ips.txt
+
+vzctl create $CTID --ostemplate "$OS"
+vzctl set $CTID --ipadd $IP --save
+vzctl set $CTID --nameserver 10.174.0.1 --save
+vzctl set $CTID --hostname "$hovzHostname" --save
+vzctl set $CTID --description "$userName"
+vzctl set $CTID --name "$userName-$description"
+
+echo "$CTID	$hovzHostname" >> /home/"$userName"/hovzList
+
+#http://xen.1045712.n5.nabble.com/console-access-to-non-root-xen-3-0-td2560667.html
+mkdir -p /etc/sudoers.d
+echo "$userName ALL=NOPASSWD:vzctl enter $CTID, vzctl start $CTID, vzctl stop $CTID" > /etc/sudoers.d/openvz-"$userName-$CTID"
+
+/etc/init.d/sudo restart

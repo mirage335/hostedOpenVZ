@@ -1,0 +1,22 @@
+_Installation_
+Simply do "make install" on a compatible host.
+
+These scripts are based on hostedXen.
+
+Instructions on creating a Debian OpenVZ host are documented at http://openvz.org/Installation_on_Debian .
+
+_NAT_
+
+Something like the following will be helpful for network configuration in /etc/network/interfaces .
+
+auto br
+	iface br inet static
+	bridge_ports none
+	bridge_stp no
+	address 10.174.0.1
+	netmask 255.255.0.0
+	network 10.174.0.0/16
+	broadcast 10.174.255.255
+
+_Init_
+Run the hovzInit script to initialize the pool of usable IP addresses and CTIDs for new OpenVZ containers.

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#Usage: ./hxDelVM <CTID> <user>
+#Ex: ./hxDelVM 1001 testUser
+
+CTID="$1"
+userName="$2"
+
+vzctl destroy "$CTID"
+
+#Update user's hovzList.
+if [[ -f /home/"$userName"/hovzList ]]
+then
+	grep -v "$CTID" /home/"$userName"/hovzList > /home/"$userName"/hovzList.new
+	mv /home/"$userName"/hovzList.new /home/"$userName"/hovzList
+fi
+
+#Update sudo permissions.
+rm /etc/sudoers.d/openvz-"$userName-$CTID"
+
+/etc/init.d/sudo restart
