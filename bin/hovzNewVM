@@ -18,11 +18,11 @@ tail -n +2 /etc/hostedOpenVZ/ips.txt > /etc/hostedOpenVZ/ips.txt.new
 mv /etc/hostedOpenVZ/ips.txt.new /etc/hostedOpenVZ/ips.txt
 
 vzctl create $CTID --ostemplate "$OS"
-vzctl set $CTID --ipadd $IP --save
-vzctl set $CTID --nameserver 10.174.0.1 --save
+vzctl set $CTID --ipadd "$IP"
+vzctl set $CTID --nameserver "10.174.0.1" --save
 vzctl set $CTID --hostname "$hovzHostname" --save
-vzctl set $CTID --description "$userName"
-vzctl set $CTID --name "$userName-$description"
+vzctl set $CTID --description "$userName" --save
+vzctl set $CTID --name "$userName-$description" --save
 
 echo "$CTID	$hovzHostname" >> /home/"$userName"/hovzList
 

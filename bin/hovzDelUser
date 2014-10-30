@@ -25,7 +25,7 @@ for j in $( cat /tmp/$uniqueId/ownedCTIDs); do
 done
 
 rm /tmp/$uniqueId/all
-rm /tmp/$uniqueId/hostnames
+rm /tmp/$uniqueId/all_noHeader
 rmdir /tmp/$uniqueId/
 
 userdel -r "$userName"
