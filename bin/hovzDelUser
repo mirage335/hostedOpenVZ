@@ -14,8 +14,7 @@ for i in $( cat /tmp/$uniqueId/ownedCTIDs); do
 	hovzDelVM "$i" "$userName"
 done
 
-rm /tmp/$uniqueId/all
-rm /tmp/$uniqueId/all_noHeader
+rm /tmp/$uniqueId/ownedCTIDs
 rmdir /tmp/$uniqueId/
 
 userdel -r "$userName"
