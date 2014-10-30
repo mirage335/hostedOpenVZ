@@ -8,20 +8,10 @@ userName="$1"
 uniqueId=hovz-$RANDOM
 mkdir -p /tmp/$uniqueId/
 
-vzlist -a -o ctid,description > /tmp/$uniqueId/all
+vzlist -a -1 -t -d "$userName" | sed 's/ //g' > /tmp/$uniqueId/ownedCTIDs
 
-tail -n+2 /tmp/$uniqueId/all > /tmp/$uniqueId/all_noHeader
-
-#TODO: Verify these fields.
-for i in $( cat /tmp/$uniqueId/all_noHeader ); do
-	if [[ $(echo "$i" | cut -f2- -d\ ) == "$userName" ]]
-	then
-		echo "$i" | cut -f1 -d\ >> /tmp/$uniqueId/ownedCTIDs
-	fi
-done
-
-for j in $( cat /tmp/$uniqueId/ownedCTIDs); do
-	hxDelVM "$j" "$userName"
+for i in $( cat /tmp/$uniqueId/ownedCTIDs); do
+	hovzDelVM "$i" "$userName"
 done
 
 rm /tmp/$uniqueId/all
